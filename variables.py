@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 from tkinter import *
 from tkinter.font import Font
+import speech_recognition as sr
 
 # TITLE: INITIALIZE ROOT
 root = Tk()
@@ -23,10 +24,15 @@ MainFrame = Frame(root)
 
 identifier = 'Unknown'
 save_folder = ''
-errorLabel1 = Label()
-errorLabel2 = Label()
+errorLabel1 = Label() # necessary to display errors on multiple lines
+errorLabel2 = Label() # necessary to display errors on multiple lines
 
-microphone = None
+# TITLE: SPEECH_RECOGNITION
+
+microphone, recognizer = sr.Microphone(), sr.Recognizer()
+recognizer.pause_threshold = 0.5  # minimum length of silence after speaking
+recognizer.energy_threshold = 100  # set energy threshold
+recognizer.dynamic_energy_threshold = False  # do not update ambient noise threshold
 
 # TITLE: MENTAL ARITHMETIC
 ma_setup_frame = None

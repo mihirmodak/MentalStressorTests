@@ -1,11 +1,10 @@
 import variables as db
 from tkinter import *
-import os
+import os, sys
 from datetime import datetime
-import speech_recognition as sr
-import argparse
+import time
 
-from tests import mental_arithmetic
+from tests import sr_mental_arithmetic
 
 
 def create_save_path():
@@ -41,34 +40,22 @@ def error_handler(frame, error, row_num, colspan=1, display=True):
     )
     if display: db.errorLabel2.grid(row=row_num + 1, column=0, columnspan=colspan)
 
+    # time.sleep(1)
+    #
+    # db.errorLabel1.grid_forget()
+    # db.errorLabel2.grid_forget()
 
-def speech_recognition_init():
-    try:
-        # parser = argparse.ArgumentParser(description='Decide Time Limit')
-        # parser.add_argument('--time', '-t', type=int)
-        # db.mic_time_limit = parser.parse_args()
-
-        r = sr.Recognizer()  # recognizer instance
-        r.pause_threshold = 0.5  # minimum length of silence after speaking
-        r.energy_threshold = 100  # set energy threshold
-        r.dynamic_energy_threshold = False  # do not update ambient noise threshold
-
-        db.microphone = sr.Microphone()  # microphone instance
-
-        # raise NotImplementedError("The speech recognition has not been implemented")
-    except Exception as e:
-        error_handler(db.ma_setup_frame, e, 5)
 
 # TITLE: BUTTON FUNCTIONS
 def activate_mental_arithmetic(identifier_widget):
     db.identifier = identifier_widget.get().strip()
     db.MainFrame.forget()
-    mental_arithmetic.main()
+    sr_mental_arithmetic.main()
 
 
-def exit_test(TestFrame):
+def exit_test(TestFrame, callback_fun):
     db.errorLabel1.destroy()
     db.errorLabel2.destroy()
-    db.microphone.close()
+    callback_fun(wait_for_stop=False)
     TestFrame.forget()
     db.MainFrame.pack()
