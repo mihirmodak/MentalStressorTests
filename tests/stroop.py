@@ -9,23 +9,21 @@ import array
 import speech_recognition as sr
 
 # TITLE: INITIALIZE VARIABLES
-db.ma_setup_frame = Frame(db.root)
-db.mental_arithmetic_frame = Frame(db.root)
-num_range1 = None
-num_range2 = None
+db.stroop_setup_frame = Frame(db.root)
+db.stroop_frame = Frame(db.root)
 selected_difficulty = None
-mode = []
+options = ('green', 'blue', 'yellow', 'red')
 num_trials = None
 question_prompt = None
 file = None
 label_t = None
 answer = None
-check_label = Label(db.mental_arithmetic_frame, font=db.DefaultFont)
+check_label = Label(db.stroop_frame, font=db.DefaultFont)
 default_time = None
 pass_enabled = None
 stop_listening = None
 problematic_nums = {
-    'two':2
+    'two': 2
 }
 
 
@@ -40,49 +38,30 @@ def create_record(save):
         else:
             return None
     except Exception as e:
-        s.error_handler(db.ma_setup_frame, e, 5)
+        s.error_handler(db.stroop_setup_frame, e, 5)
 
 
 def question():
     try:
-        global num_range1, num_range2, mode, question_prompt, answer
+        global options, question_prompt, answer
         # raise NotImplementedError("The question generator function has not been implemented")
 
-        prompt = "Invalid test mode(s) selected"
+        color = random.choice(options)
 
-        number1 = random.randrange(num_range1[0], num_range1[1])
-        number2 = random.randrange(num_range2[0], num_range2[1])
-
-        a = random.choice(mode)
-
-        if a == 'ADDITION':
-            answer = number1 + number2
-            prompt = (str(number1) + " + " + str(number2))
-        elif a == 'SUBTRACTION':
-            answer = max(number1, number2) - min(number1, number2)
-            prompt = (str(max(number1, number2)) + " - " + str(min(number1, number2)))
-        elif a == 'MULTIPLICATION':
-            answer = number1 * number2
-            prompt = (str(number1) + " * " + str(number2))
-        elif a == 'DIVISION':
-            temp_answer = number1 * number2
-            answer = number1
-            prompt = (str(temp_answer) + " / " + str(number2))
+        if random.random() > db.congruency_proportion:
+            word = random.choice(options).upper()
         else:
-            raise Exception(prompt)
+            word = color.upper()
 
-        if num_trials == 0:
-            question_prompt = Label(db.mental_arithmetic_frame, text=prompt, width=45, bg='orange', font=db.DefaultFont)
-            question_prompt.grid(row=2, column=0, columnspan=2)
-        else:
-            # question_prompt = Label(db.mental_arithmetic_frame)
-            question_prompt.config(text=prompt)
+        answer = color
 
-        print(question_prompt)
+        db.errorLabel1.grid_forget()
+        db.errorLabel2.grid_forget()
+        Label(db.stroop_frame, text=word, width=45, bg='gray', fg=color, font=db.HeadingFont).grid(row=3, pady=30)
 
         return answer
     except Exception as e:
-        s.error_handler(db.mental_arithmetic_frame, e, 5)
+        s.error_handler(db.stroop_frame, e, 5)
 
 
 def end_program(test_frame):
@@ -95,7 +74,7 @@ def end_program(test_frame):
 
 def start():
     # Step 1: Get all the necessary variables
-    global num_range1, num_range2, selected_difficulty, mode, num_trials, file, label_t, answer, \
+    global selected_difficulty, num_trials, file, label_t, answer, \
         default_time, pass_enabled, stop_listening
 
     # Step 2: Set up Exception Handling
@@ -104,40 +83,32 @@ def start():
 
         # Step 3: Identify the Difficulty and the Test Types (Addition, Subtraction, etc.)
         selected = []
-        for value in list(db.ma_checks.values()):
+        for value in list(db.stroop_checks.values()):
             selected.append(value.get())
-        selected_difficulty = list(db.ma_checks.keys())[selected.index(1, 0, 3)]
-        if selected[3] == 1: pass_enabled = True
+        selected_difficulty = list(db.stroop_checks.keys())[selected.index(1)]
 
         if selected_difficulty == "EASY":
-            num_range1 = [1, 10]
-            num_range2 = [1, 10]
+            db.congruency_proportion = 0.7
         elif selected_difficulty == "MODERATE":
-            num_range1 = [11, 50]
-            num_range2 = [1, 10]
+            db.congruency_proportion = 0.5
         elif selected_difficulty == "HARD":
-            num_range1 = [11, 100]
-            num_range2 = [11, 100]
+            db.congruency_proportion = 0.1
         else:
             raise Exception("Please select a difficulty")
 
-        mode_indices = np.where(np.isin(selected, 1))[0]
-        mode_indices = mode_indices[mode_indices > 3]
-        mode = [list(db.ma_checks.keys())[i] for i in mode_indices]
-
     except Exception as e:
-        s.error_handler(db.ma_setup_frame, e, 5, 5)
+        s.error_handler(db.stroop_setup_frame, e, 5, 5)
         return
 
     try:
         # Step 4: Get rid of the setup screen and start the test
-        db.ma_setup_frame.forget()
+        db.stroop_setup_frame.forget()
 
         # Step 4b: Add an exit button
         Button(
-            master=db.mental_arithmetic_frame,
+            master=db.stroop_frame,
             text="X",
-            command=partial(end_program, db.mental_arithmetic_frame),
+            command=partial(end_program, db.stroop_frame),
             bg='#a60000',
             fg='white',
             activebackground='#d60000',
@@ -152,13 +123,13 @@ def start():
 
         # Step 5: Start writing test difficulty data to the save files
         if file is not None:
-            file.write(selected_difficulty + ' ' + str(mode) + '\n')
+            file.write(selected_difficulty + ' ' + str(selected_difficulty) + '\n')
             file.write("START,     Time Stamp: {}\n".format(start_time))
-        print(selected_difficulty, mode[0:])
+        print(selected_difficulty)
         print("START,      Time Stamp: ", start_time)
 
         # Step 6: Add a timer
-        label_t = Label(db.mental_arithmetic_frame, text='0.0', font=db.HeadingFont)
+        label_t = Label(db.stroop_frame, text='0.0', font=db.HeadingFont)
         label_t.grid(row=1, column=0, columnspan=2, pady=50)
 
         # Step 7: Start listening through microphone
@@ -167,12 +138,11 @@ def start():
 
         stop_listening = db.recognizer.listen_in_background(db.microphone, submit)
 
-
         # Step 8: Create instructions label
-        Label(db.mental_arithmetic_frame, text="Listening...", font=db.DefaultFont) \
+        Label(db.stroop_frame, text="Say the color of the text", font=db.DefaultFont) \
             .grid(row=4, column=0, columnspan=2)
         # Step 9: Display it all
-        db.mental_arithmetic_frame.pack()
+        db.stroop_frame.pack()
 
         # Step 10: Endlessly update timer
         while True:
@@ -181,16 +151,16 @@ def start():
             # wait for 0.1 seconds
             time.sleep(0.1)
             # needed with time.sleep()
-            db.mental_arithmetic_frame.update()
+            db.stroop_frame.update()
             # update timer
             db.timer = round(time.time() - default_time, 2)
 
     except Exception as e:
-        s.error_handler(db.mental_arithmetic_frame, e, 5, display=False)
+        s.error_handler(db.stroop_frame, e, 5, display=False)
 
 
 def submit(recognizer, audio):
-    global answer, check_label, file, default_time, problematic_nums
+    global answer, check_label, file, default_time, options
     try:
         # raise NotImplementedError("The answer submitter function has not been implemented")
         global num_trials
@@ -200,12 +170,9 @@ def submit(recognizer, audio):
             submitted = recognizer.recognize_google(audio)
             print(submitted)
             try:
-                if submitted in problematic_nums.keys():
-                    submitted = problematic_nums[submitted]
-                else:
-                    submitted = int(submitted)
-            except ValueError:
-                raise Exception("I can only understand numbers. Please repeat your answer.")
+                assert submitted in options
+            except AssertionError:
+                raise Exception("Please say a valid color: Red, Yellow, Blue, or Green.")
         except sr.UnknownValueError:
             raise Exception("Sorry, didn't catch that")
         except sr.RequestError as e:
@@ -216,11 +183,12 @@ def submit(recognizer, audio):
             db.errorLabel1.grid_forget()
             db.errorLabel2.grid_forget()
             try:
-                db.errorLabel1.forget_grid(); db.errorLabel2.forget_grid()
+                db.errorLabel1.forget_grid();
+                db.errorLabel2.forget_grid()
             except:
                 pass
             if num_trials == 1:
-                check_label = Label(db.mental_arithmetic_frame, text=message, fg='red', font=db.DefaultFont)
+                check_label = Label(db.stroop_frame, text=message, fg='red', font=db.DefaultFont)
                 check_label.grid(row=5, column=0, columnspan=2)
             else:
                 check_label.config(text=message, fg='red')
@@ -235,7 +203,7 @@ def submit(recognizer, audio):
             db.errorLabel1.grid_forget()
             db.errorLabel2.grid_forget()
             if num_trials == 1:
-                check_label = Label(db.mental_arithmetic_frame, text=message, fg='green', font=db.DefaultFont)
+                check_label = Label(db.stroop_frame, text=message, fg='green', font=db.DefaultFont)
                 check_label.grid(row=5, column=0, columnspan=2)
             else:
                 check_label.config(text=message, fg='green')
@@ -247,7 +215,7 @@ def submit(recognizer, audio):
         answer = question()
 
     except Exception as e:
-        s.error_handler(db.mental_arithmetic_frame, e, 6, 2)
+        s.error_handler(db.stroop_frame, e, 6, 2)
 
 
 # TITLE: GUI
@@ -255,9 +223,9 @@ def main():
     try:
         # Step 1: Add an exit button
         Button(
-            master=db.ma_setup_frame,
+            master=db.stroop_setup_frame,
             text="X",
-            command=partial(end_program, db.ma_setup_frame),
+            command=partial(end_program, db.stroop_setup_frame),
             bg='#a60000',
             fg='white',
             activebackground='#d60000',
@@ -265,39 +233,28 @@ def main():
         ).grid(row=0, column=100, sticky=NE)
 
         # Add some spacing below the exit button
-        # db.ma_setup_frame.grid_rowconfigure(1, weight=1, minsize=50)
+        # db.stroop_setup_frame.grid_rowconfigure(1, weight=1, minsize=50)
 
         # Step 2: Create Checkboxes for Test Type and Difficulty
         difficulties = ('EASY', 'MODERATE', 'HARD', 'PASS')
-        types = ('ADDITION', 'SUBTRACTION', 'MULTIPLICATION', 'DIVISION')
-        db.ma_checks = {}
+        db.stroop_checks = {}
 
         for index, name in enumerate(difficulties):
             # print(name, index)
-            db.ma_checks[name] = IntVar()
+            db.stroop_checks[name] = IntVar()
             Checkbutton(
-                master=db.ma_setup_frame,
+                master=db.stroop_setup_frame,
                 text=difficulties[index],
-                variable=db.ma_checks[name],
+                variable=db.stroop_checks[name],
                 font=db.DefaultFont
             ).grid(row=2, column=index, sticky=W)
 
-        for index, name in enumerate(types):
-            # print(name, index)
-            db.ma_checks[name] = IntVar()
-            Checkbutton(
-                master=db.ma_setup_frame,
-                text=types[index],
-                variable=db.ma_checks[name],
-                font=db.DefaultFont
-            ).grid(row=3, column=index, sticky=W)
-
         # Add some spacing below the exit button
-        db.ma_setup_frame.grid_rowconfigure(4, weight=1, minsize=150)
+        db.stroop_setup_frame.grid_rowconfigure(3, weight=1, minsize=150)
 
         # Step 3: Add a 'Start' Button
         Button(
-            master=db.ma_setup_frame,
+            master=db.stroop_setup_frame,
             text="Start Test",
             command=start,
             activebackground="blue",
@@ -305,10 +262,9 @@ def main():
             bg="white",
             fg="black",
             font=db.DefaultFont,
-        ).grid(row=4, columnspan=5, ipadx=200, pady=20)
+        ).grid(row=3, columnspan=5, ipadx=200, pady=20)
 
     except Exception as e:
-        s.error_handler(db.ma_setup_frame, e, 5)
+        s.error_handler(db.stroop_setup_frame, e, 5)
 
-    db.ma_setup_frame.pack()
-
+    db.stroop_setup_frame.pack()

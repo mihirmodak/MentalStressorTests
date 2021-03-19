@@ -2,9 +2,8 @@ import variables as db
 from tkinter import *
 import os, sys
 from datetime import datetime
-import time
 
-from tests import sr_mental_arithmetic
+from tests import sr_mental_arithmetic, stroop
 
 
 def create_save_path():
@@ -52,6 +51,10 @@ def activate_mental_arithmetic(identifier_widget):
     db.MainFrame.forget()
     sr_mental_arithmetic.main()
 
+def activate_stroop(identifier_widget):
+    db.identifier = identifier_widget.get().strip()
+    db.MainFrame.forget()
+    stroop.main()
 
 def exit_test(TestFrame, callback_fun):
     db.errorLabel1.destroy()

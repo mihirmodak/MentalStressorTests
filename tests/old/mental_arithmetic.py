@@ -132,9 +132,9 @@ def start():
 
         # Step 3: Identify the Difficulty and the Test Types (Addition, Subtraction, etc.)
         selected = []
-        for value in list(db.checks.values()):
+        for value in list(db.ma_checks.values()):
             selected.append(value.get())
-        selected_difficulty = list(db.checks.keys())[selected.index(1, 0, 3)]
+        selected_difficulty = list(db.ma_checks.keys())[selected.index(1, 0, 3)]
         if selected[3] == 1: pass_enabled = True
 
         if selected_difficulty == "EASY":
@@ -151,7 +151,7 @@ def start():
 
         mode_indices = np.where(np.isin(selected, 1))[0]
         mode_indices = mode_indices[mode_indices > 3]
-        mode = [list(db.checks.keys())[i] for i in mode_indices]
+        mode = [list(db.ma_checks.keys())[i] for i in mode_indices]
 
     except Exception as e:
         s.error_handler(db.ma_setup_frame, e, 5, 5)
@@ -246,25 +246,25 @@ def main():
         # Step 2: Create Checkboxes for Test Type and Difficulty
         difficulties = ('EASY', 'MODERATE', 'HARD', 'PASS')
         types = ('ADDITION', 'SUBTRACTION', 'MULTIPLICATION', 'DIVISION')
-        db.checks = {}
+        db.ma_checks = {}
 
         for index, name in enumerate(difficulties):
             # print(name, index)
-            db.checks[name] = IntVar()
+            db.ma_checks[name] = IntVar()
             Checkbutton(
                 master=db.ma_setup_frame,
                 text=difficulties[index],
-                variable=db.checks[name],
+                variable=db.ma_checks[name],
                 font=db.DefaultFont
             ).grid(row=2, column=index, sticky=W)
 
         for index, name in enumerate(types):
             # print(name, index)
-            db.checks[name] = IntVar()
+            db.ma_checks[name] = IntVar()
             Checkbutton(
                 master=db.ma_setup_frame,
                 text=types[index],
-                variable=db.checks[name],
+                variable=db.ma_checks[name],
                 font=db.DefaultFont
             ).grid(row=3, column=index, sticky=W)
 

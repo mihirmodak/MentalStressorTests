@@ -58,14 +58,14 @@ def main():
     Button(
         master=db.MainFrame,
         text="Stroop Color Test",
-        command=s.activate_mental_arithmetic,
+        command=partial(s.activate_stroop, identifier_widget),
         activebackground="blue",
         activeforeground="white",
         bg="white",
         fg="black",
         font=db.HeadingFont,
         width=50,
-        state=DISABLED
+        state=NORMAL
     ).grid(row=7, pady=10)
 
     db.MainFrame.pack()
