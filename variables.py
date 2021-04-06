@@ -10,13 +10,23 @@ root = Tk()
 # TITLE: DEFAULT TKINTER FONTS
 HeadingFont = Font(
     family='Helvetica',
-    size=20,
+    size=30,
     weight='bold'
 )
 DefaultFont = Font(
     family='Helvetica',
+    size=30,
+    weight='normal'
+)
+SmallFont = Font(
+    family='Helvetica',
     size=20,
     weight='normal'
+)
+GiantFont = Font(
+    family='Helvetica',
+    size=40,
+    weight='bold'
 )
 
 # TITLE: MAIN
@@ -31,14 +41,22 @@ timer = None
 # TITLE: SPEECH_RECOGNITION
 microphone, recognizer = sr.Microphone(), sr.Recognizer()
 recognizer.pause_threshold = 0.5  # minimum length of silence after speaking
-recognizer.energy_threshold = 100  # set energy threshold
+recognizer.energy_threshold = 200  # set energy threshold
 recognizer.dynamic_energy_threshold = False  # do not update ambient noise threshold
 
 # TITLE: MENTAL ARITHMETIC
 ma_setup_frame, mental_arithmetic_frame = None, None
 ma_checks = None
 
+# TITLE: MENTAL ARITHMETIC
+new_ma_setup_frame, new_mental_arithmetic_frame = None, None
+new_ma_checks = None
+
 # TITLE: STROOP
 stroop_setup_frame, stroop_frame = None, None
 congruency_proportion = 0.5
 stroop_checks = None
+
+# TITLE: NBACK
+nb_setup_frame, nback_frame = None, None
+grid_boxes = None

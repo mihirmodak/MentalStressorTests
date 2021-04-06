@@ -20,7 +20,7 @@ label_t = None
 answer = None
 check_label = Label(db.mental_arithmetic_frame, font=db.DefaultFont)
 default_time = None
-pass_enabled = None
+skip_enabled = None
 
 
 # TITLE: HELPER FUNCTIONS
@@ -124,7 +124,7 @@ def submit(entry_widget):
 def start():
     # Step 1: Get all the necessary variables
     global num_range1, num_range2, selected_difficulty, mode, num_trials, file, label_t, answer, \
-        default_time, pass_enabled
+        default_time, skip_enabled
 
     # Step 2: Set up Exception Handling
     try:

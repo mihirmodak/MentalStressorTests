@@ -8,7 +8,7 @@ from functools import partial
 db.root['padx'] = 100
 db.root['pady'] = 100
 db.root.title("Stress Test")
-db.root.geometry("1200x600")
+db.root.geometry("1500x800")
 # Button(db.root, text="X", command=exit, bg='#a60000', fg='white', activebackground='#d60000', activeforeground='white').pack(side=TOP, anchor=NE)
 
 
@@ -32,7 +32,7 @@ def main():
     Button(
         master=db.MainFrame,
         text="Mental Arithmetic Test",
-        command=partial(s.activate_mental_arithmetic, identifier_widget),
+        command=lambda: s.activate_mental_arithmetic(identifier_widget),
         activebackground="blue",
         activeforeground="white",
         bg="white",
@@ -44,21 +44,21 @@ def main():
 
     Button(
         master=db.MainFrame,
-        text="N-Back Test",
-        command=s.activate_mental_arithmetic,
+        text="2-Step Mental Arithmetic Test",
+        command=lambda: s.activate_new_mental_arithmetic(identifier_widget),
         activebackground="blue",
         activeforeground="white",
         bg="white",
         fg="black",
         font=db.HeadingFont,
         width=50,
-        state=DISABLED
+        state=NORMAL
     ).grid(row=6, pady=10)
 
     Button(
         master=db.MainFrame,
-        text="Stroop Color Test",
-        command=partial(s.activate_stroop, identifier_widget),
+        text="N-Back Test",
+        command=lambda: s.activate_nback(identifier_widget),
         activebackground="blue",
         activeforeground="white",
         bg="white",
@@ -67,6 +67,19 @@ def main():
         width=50,
         state=NORMAL
     ).grid(row=7, pady=10)
+
+    Button(
+        master=db.MainFrame,
+        text="Stroop Color Test",
+        command=lambda: s.activate_stroop(identifier_widget),
+        activebackground="blue",
+        activeforeground="white",
+        bg="white",
+        fg="black",
+        font=db.HeadingFont,
+        width=50,
+        state=NORMAL
+    ).grid(row=8, pady=10)
 
     db.MainFrame.pack()
     db.root.mainloop()

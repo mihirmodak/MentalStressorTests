@@ -1,7 +1,6 @@
 from tkinter import *
 import variables as db
 import settings as s
-from functools import partial
 import numpy as np
 import time
 import random
@@ -19,8 +18,8 @@ file = None
 label_t = None
 answer = None
 check_label = Label(db.stroop_frame, font=db.DefaultFont)
-default_time = None
-pass_enabled = None
+default_time, start_time = None, None
+skip_enabled = None
 stop_listening = None
 problematic_nums = {
     'two': 2
@@ -33,7 +32,7 @@ def create_record(save):
     try:
         if save:
             db.save_folder = s.create_save_path()
-            filename = str(db.save_folder) + "mental_arithmetic.txt"
+            filename = str(db.save_folder) + "stroop.txt"
             file = open(filename, "a+")
         else:
             return None
@@ -43,8 +42,11 @@ def create_record(save):
 
 def question():
     try:
-        global options, question_prompt, answer
-        # raise NotImplementedError("The question generator function has not been implemented")
+        global options, question_prompt, answer, default_time, start_time
+
+        default_time = time.time()
+        db.timer = start_time
+
 
         color = random.choice(options)
 
@@ -54,10 +56,15 @@ def question():
             word = color.upper()
 
         answer = color
+        try:
+            db.errorLabel1.grid_forget()
+            db.errorLabel2.grid_forget()
+        except:
+            pass
 
-        db.errorLabel1.grid_forget()
-        db.errorLabel2.grid_forget()
-        Label(db.stroop_frame, text=word, width=45, bg='gray', fg=color, font=db.HeadingFont).grid(row=3, pady=30)
+        Label(db.stroop_frame, text="", width=45, bg='white', fg=color, font=db.HeadingFont).grid(row=3)
+        time.sleep(0.00001)
+        Label(db.stroop_frame, text=word, width=45, bg='gray', fg=color, font=db.HeadingFont).grid(row=3)
 
         return answer
     except Exception as e:
@@ -75,7 +82,7 @@ def end_program(test_frame):
 def start():
     # Step 1: Get all the necessary variables
     global selected_difficulty, num_trials, file, label_t, answer, \
-        default_time, pass_enabled, stop_listening
+        default_time, skip_enabled, stop_listening, start_time
 
     # Step 2: Set up Exception Handling
     try:
@@ -108,11 +115,12 @@ def start():
         Button(
             master=db.stroop_frame,
             text="X",
-            command=partial(end_program, db.stroop_frame),
+            command=lambda: end_program(db.stroop_frame),
             bg='#a60000',
             fg='white',
             activebackground='#d60000',
             activeforeground='white',
+            font=db.DefaultFont
         ).grid(row=0, column=100, sticky=NE)
 
         num_trials = 0
@@ -219,17 +227,18 @@ def submit(recognizer, audio):
 
 
 # TITLE: GUI
-def main():
+def setup():
     try:
         # Step 1: Add an exit button
         Button(
             master=db.stroop_setup_frame,
             text="X",
-            command=partial(end_program, db.stroop_setup_frame),
+            command=lambda: end_program(db.stroop_setup_frame),
             bg='#a60000',
             fg='white',
             activebackground='#d60000',
             activeforeground='white',
+            font=db.DefaultFont
         ).grid(row=0, column=100, sticky=NE)
 
         # Add some spacing below the exit button
