@@ -31,6 +31,19 @@ def main():
 
     Button(
         master=db.MainFrame,
+        text="Calibration",
+        command=lambda: s.calibrate(identifier_widget),
+        activebackground="blue",
+        activeforeground="white",
+        bg="white",
+        fg="black",
+        font=db.HeadingFont,
+        width=50,
+        state=NORMAL
+    ).grid(row=5, pady=10)
+
+    Button(
+        master=db.MainFrame,
         text="Mental Arithmetic Test",
         command=lambda: s.activate_mental_arithmetic(identifier_widget),
         activebackground="blue",
@@ -40,7 +53,7 @@ def main():
         font=db.HeadingFont,
         width=50,
         state=NORMAL
-    ).grid(row=5, pady=10)
+    ).grid(row=6, pady=10)
 
     Button(
         master=db.MainFrame,
@@ -53,7 +66,7 @@ def main():
         font=db.HeadingFont,
         width=50,
         state=NORMAL
-    ).grid(row=6, pady=10)
+    ).grid(row=7, pady=10)
 
     Button(
         master=db.MainFrame,
@@ -66,7 +79,7 @@ def main():
         font=db.HeadingFont,
         width=50,
         state=NORMAL
-    ).grid(row=7, pady=10)
+    ).grid(row=8, pady=10)
 
     Button(
         master=db.MainFrame,
@@ -79,7 +92,7 @@ def main():
         font=db.HeadingFont,
         width=50,
         state=NORMAL
-    ).grid(row=8, pady=10)
+    ).grid(row=9, pady=10)
 
     db.MainFrame.pack()
     db.root.mainloop()

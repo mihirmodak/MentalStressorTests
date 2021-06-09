@@ -1,0 +1,1 @@
+pyinstaller --onefile --name "StressTestGUI.exe" main.py

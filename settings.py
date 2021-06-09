@@ -5,6 +5,7 @@ import os, sys
 from datetime import datetime
 
 from tests import sr_mental_arithmetic, stroop, nback, sr_mental_arithmetic_new
+import calibration
 
 
 def create_save_path():
@@ -34,7 +35,7 @@ def error_handler(frame, error, row_num, colspan=1, display=True):
         font=db.DefaultFont,
         fg='red'
     )
-    if display: db.errorLabel1.grid(row=row_num, column=0, columnspan=colspan)
+    # if display: db.errorLabel1.grid(row=row_num, column=0, columnspan=colspan)
 
     db.errorLabel2 = Label(
         frame,
@@ -80,6 +81,13 @@ def activate_nback(identifier_widget):
         db.identifier = "Unknown"
     db.MainFrame.forget()
     nback.setup()
+
+def calibrate(identifier_widget):
+    db.identifier = identifier_widget
+    if db.identifier == "":
+        db.identifier = "Unknown"
+    db.MainFrame.forget()
+    calibration.setup()
 
 
 def exit_test(TestFrame, callback_fun):

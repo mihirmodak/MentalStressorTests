@@ -11,12 +11,12 @@ import speech_recognition as sr
 db.stroop_setup_frame = Frame(db.root)
 db.stroop_frame = Frame(db.root)
 selected_difficulty = None
-options = ('green', 'blue', 'yellow', 'red')
+options = ('green', 'blue', 'yellow', 'orange')
 num_trials = None
 question_prompt = None
 file = None
 label_t = None
-answer = None
+answer1, answer2 = None, None
 check_label = Label(db.stroop_frame, font=db.DefaultFont)
 default_time, start_time = None, None
 skip_enabled = None
@@ -41,8 +41,10 @@ def create_record(save):
 
 
 def question():
+    global check_label
+    check_label.grid_forget()
     try:
-        global options, question_prompt, answer, default_time, start_time
+        global options, question_prompt, answer1, answer2, default_time, start_time
 
         default_time = time.time()
         db.timer = start_time
@@ -50,23 +52,22 @@ def question():
 
         color = random.choice(options)
 
-        if random.random() > db.congruency_proportion:
+        if random.random() <= db.congruency_proportion:
             word = random.choice(options).upper()
         else:
             word = color.upper()
 
-        answer = color
-        try:
-            db.errorLabel1.grid_forget()
-            db.errorLabel2.grid_forget()
-        except:
-            pass
+        answer1 = db.pronounce[color]
+        answer2 = color
+
+        db.errorLabel1.grid_forget()
+        db.errorLabel2.grid_forget()
 
         Label(db.stroop_frame, text="", width=45, bg='white', fg=color, font=db.HeadingFont).grid(row=3)
         time.sleep(0.00001)
         Label(db.stroop_frame, text=word, width=45, bg='gray', fg=color, font=db.HeadingFont).grid(row=3)
 
-        return answer
+        return answer1, answer2
     except Exception as e:
         s.error_handler(db.stroop_frame, e, 5)
 
@@ -81,7 +82,7 @@ def end_program(test_frame):
 
 def start():
     # Step 1: Get all the necessary variables
-    global selected_difficulty, num_trials, file, label_t, answer, \
+    global selected_difficulty, num_trials, file, label_t, answer1, answer2, \
         default_time, skip_enabled, stop_listening, start_time
 
     # Step 2: Set up Exception Handling
@@ -124,7 +125,7 @@ def start():
         ).grid(row=0, column=100, sticky=NE)
 
         num_trials = 0
-        answer = question()
+        answer1, answer2 = question()
         default_time = time.time()
         start_time = round(time.time() - default_time, 2)
         db.timer = start_time
@@ -168,17 +169,24 @@ def start():
 
 
 def submit(recognizer, audio):
-    global answer, check_label, file, default_time, options
+    global answer1, answer2, check_label, file, default_time, options, num_trials
+
+    if num_trials == 1:
+        check_label = Label(db.stroop_frame, text="Thinking...", fg='black', font=db.DefaultFont)
+        check_label.grid(row=5, column=0, columnspan=2)
+    else:
+        check_label.config(text="Thinking...", fg='black')
+
     try:
         # raise NotImplementedError("The answer submitter function has not been implemented")
-        global num_trials
 
         num_trials += 1
         try:
             submitted = recognizer.recognize_google(audio)
             print(submitted)
             try:
-                assert submitted in options
+                assert submitted in options or submitted == db.skip_keyword or submitted in db.pronounce.values()\
+                or answer1 in db.pronounce.values()
             except AssertionError:
                 raise Exception("Please say a valid color: Red, Yellow, Blue, or Green.")
         except sr.UnknownValueError:
@@ -186,41 +194,54 @@ def submit(recognizer, audio):
         except sr.RequestError as e:
             raise Exception(f"Couldn't request results from Google Speech Recognition service; {e}")
 
-        if answer != submitted:
-            message = f"Wrong. You said {submitted}"
+        if submitted == db.skip_keyword:
+            message = f"Question Skipped"
             db.errorLabel1.grid_forget()
             db.errorLabel2.grid_forget()
-            try:
-                db.errorLabel1.forget_grid();
-                db.errorLabel2.forget_grid()
-            except:
-                pass
+
             if num_trials == 1:
-                check_label = Label(db.stroop_frame, text=message, fg='red', font=db.DefaultFont)
+                check_label = Label(db.stroop_frame, text=message, fg='black', font=db.DefaultFont)
                 check_label.grid(row=5, column=0, columnspan=2)
             else:
-                check_label.config(text=message, fg='red')
+                check_label.config(text=message, fg='black')
 
             if file is not None:
                 # if db.var == 1:
-                file.write("Wrong,      Time Stamp: {}\n\n".format(round(time.time() - default_time, 2)))
-            print("Wrong,      Time Stamp: ", round(time.time() - default_time, 2))
-
+                file.write("Skipped, Time Stamp: {}\n\n".format(round(time.time() - default_time, 2)))
+            print("Skipped, Time Stamp: ", round(time.time() - default_time, 2))
+            pass
         else:
-            message = f"Correct. You said {submitted}"
-            db.errorLabel1.grid_forget()
-            db.errorLabel2.grid_forget()
-            if num_trials == 1:
-                check_label = Label(db.stroop_frame, text=message, fg='green', font=db.DefaultFont)
-                check_label.grid(row=5, column=0, columnspan=2)
+            if submitted.lower() not in [answer1.lower(), answer2.lower()]:
+                message = f"Wrong"
+                db.errorLabel1.grid_forget()
+                db.errorLabel2.grid_forget()
+
+                if num_trials == 1:
+                    check_label = Label(db.stroop_frame, text=message, fg='red', font=db.DefaultFont)
+                    check_label.grid(row=5, column=0, columnspan=2)
+                else:
+                    check_label.config(text=message, fg='red')
+
+                if file is not None:
+                    # if db.var == 1:
+                    file.write("Wrong, Time Stamp: {}\n\n".format(round(time.time() - default_time, 2)))
+                print("Wrong, Time Stamp: ", round(time.time() - default_time, 2))
+
             else:
-                check_label.config(text=message, fg='green')
+                message = f"Correct"
+                db.errorLabel1.grid_forget()
+                db.errorLabel2.grid_forget()
+                if num_trials == 1:
+                    check_label = Label(db.stroop_frame, text=message, fg='green', font=db.DefaultFont)
+                    check_label.grid(row=5, column=0, columnspan=2)
+                else:
+                    check_label.config(text=message, fg='green')
 
-            if file is not None:
-                file.write("Correct,   Time Stamp: {}\n\n".format(round(time.time() - default_time, 2)))
-            print("Correct,    Time Stamp: ", round(time.time() - default_time, 2))
+                if file is not None:
+                    file.write("Correct, Time Stamp: {}\n\n".format(round(time.time() - default_time, 2)))
+                print("Correct, Time Stamp: ", round(time.time() - default_time, 2))
 
-        answer = question()
+        answer1, answer2 = question()
 
     except Exception as e:
         s.error_handler(db.stroop_frame, e, 6, 2)

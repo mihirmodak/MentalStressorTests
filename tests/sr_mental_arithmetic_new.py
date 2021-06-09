@@ -4,7 +4,6 @@ import settings as s
 import numpy as np
 import time
 import random
-import array
 import speech_recognition as sr
 
 # TITLE: INITIALIZE VARIABLES
@@ -20,10 +19,9 @@ label_t = None
 answer = None
 check_label = Label(db.new_mental_arithmetic_frame, font=db.DefaultFont)
 default_time, start_time = None, None
-skip_enabled = None
+skip_enabled = True
 stop_listening = None
-problematic_nums = {'two': 2, 'pass': -1}
-
+pronounce = {'two': 2, 'pass': -1}
 
 def create_record(save):
     global file
@@ -148,7 +146,7 @@ def start():
             activebackground='#d60000',
             activeforeground='white',
             font=db.SmallFont
-        ).grid(row=0, column=100, sticky=NE)
+        ).grid(row=0, column=1, sticky=N)
 
         num_trials = 0
         answer = question()
@@ -196,7 +194,14 @@ def start():
 
 
 def submit(recognizer, audio):
-    global answer, check_label, file, default_time, problematic_nums, num_trials
+    global answer, check_label, file, default_time, num_trials
+
+    if num_trials == 1:
+        check_label = Label(db.stroop_frame, text="Thinking...", fg='black', font=db.DefaultFont)
+        check_label.grid(row=5, column=0, columnspan=2)
+    else:
+        check_label.config(text="Thinking...", fg='black')
+
     try:
         # raise NotImplementedError("The answer submitter function has not been implemented")
 
@@ -204,9 +209,9 @@ def submit(recognizer, audio):
             submitted = recognizer.recognize_google(audio)
             print(submitted)
             try:
-                if submitted in problematic_nums.keys():
-                    submitted = problematic_nums[submitted]
-                elif submitted == "skip" and skip_enabled:
+                if submitted in pronounce.keys():
+                    submitted = pronounce[submitted]
+                if submitted == db.skip_keyword and skip_enabled:
                     pass
                 else:
                     submitted = int(submitted)
@@ -218,11 +223,13 @@ def submit(recognizer, audio):
             raise Exception(f"Couldn't request results from Google Speech Recognition service; {e}")
 
         check_label.destroy()
+        db.errorLabel1.grid_forget()
+        db.errorLabel2.grid_forget()
 
         if answer != submitted:
             num_trials += 1
-            if submitted != "skip":
-                message = f"Wrong. You said {submitted}"
+            if submitted != db.skip_keyword:
+                message = f"Wrong"
                 db.errorLabel1.grid_forget()
                 db.errorLabel2.grid_forget()
                 check_label = Label(db.new_mental_arithmetic_frame, text=message, fg='red', font=db.DefaultFont)
@@ -249,7 +256,7 @@ def submit(recognizer, audio):
                 answer = question()
 
         else:
-            message = f"Correct. You said {submitted}"
+            message = f"Correct"
             db.errorLabel1.grid_forget()
             db.errorLabel2.grid_forget()
             check_label = Label(db.new_mental_arithmetic_frame, text=message, fg='green', font=db.DefaultFont)
