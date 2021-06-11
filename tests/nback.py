@@ -76,8 +76,8 @@ def submit(recognizer, audio):
     global answer1, answer2, check_label, file, default_time, num_trials
 
     if num_trials == 1:
-        check_label = Label(db.stroop_frame, text="Thinking...", fg='black', font=db.DefaultFont)
-        check_label.grid(row=5, column=0, columnspan=3)
+        check_label = Label(db.nback_frame, text="Thinking...", fg='black', font=db.DefaultFont)
+        check_label.grid(row=7, column=0, columnspan=3)
     else:
         check_label.config(text="Thinking...", fg='black')
 
@@ -101,14 +101,15 @@ def submit(recognizer, audio):
         except sr.RequestError as e:
             raise Exception(f"Couldn't request results from Google Speech Recognition service; {e}")
 
+        check_label.grid_forget()
         if submitted == db.skip_keyword:
             message = "Question Skipped"
             db.errorLabel1.grid_forget()
             db.errorLabel2.grid_forget()
 
             if num_trials == 1:
-                check_label = Label(db.stroop_frame, text=message, fg='black', font=db.DefaultFont)
-                check_label.grid(row=5, column=0, columnspan=3)
+                check_label = Label(db.nback_frame, text=message, fg='black', font=db.DefaultFont)
+                check_label.grid(row=7, column=0, columnspan=3)
             else:
                 check_label.config(text=message, fg='black')
 
@@ -125,7 +126,7 @@ def submit(recognizer, audio):
                     db.errorLabel1.grid_forget()
                     db.errorLabel2.grid_forget()
                     check_label.config(text=message, fg='red')
-                    check_label.grid(row=5, column=0, columnspan=3)
+                    check_label.grid(row=7, column=0, columnspan=3)
 
                     if file is not None:
                         # if db.var == 1:
@@ -136,7 +137,7 @@ def submit(recognizer, audio):
                     db.errorLabel1.grid_forget()
                     db.errorLabel2.grid_forget()
                     check_label.config(text=message, fg='black')
-                    check_label.grid(row=5, column=0, columnspan=3)
+                    check_label.grid(row=7, column=0, columnspan=3)
 
 
             else:
@@ -144,7 +145,7 @@ def submit(recognizer, audio):
                 db.errorLabel1.grid_forget()
                 db.errorLabel2.grid_forget()
                 check_label.config(text=message, fg='green')
-                check_label.grid(row=5, column=0, columnspan=3)
+                check_label.grid(row=7, column=0, columnspan=3)
 
 
                 if file is not None:
@@ -152,6 +153,7 @@ def submit(recognizer, audio):
                 print(f"Correct,{submitted},Time Stamp: {round(time.time() - default_time, 2)}")
 
         answer1, answer2 = question()
+        db.nback_frame.after(2000, check_label.grid_forget)
 
     except Exception as e:
         s.error_handler(db.nback_frame, e, 6, colspan=3)

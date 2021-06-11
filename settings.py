@@ -1,7 +1,8 @@
 import variables as db
 from tkinter import *
 from tkinter.font import Font
-import os, sys
+import os
+import sys
 from datetime import datetime
 
 from tests import sr_mental_arithmetic, stroop, nback, sr_mental_arithmetic_new
@@ -10,11 +11,14 @@ import calibration
 
 def create_save_path():
     if sys.platform == "linux":
-        if not os.path.isdir(
-                f"./saves/{str(datetime.now().strftime('%Y-%m-%d'))}/{db.identifier}"):  # Check if the directory already exists
-            os.makedirs(
-                f"./saves/{str(datetime.now().strftime('%Y-%m-%d'))}/{db.identifier}")  # If it doesn't, then make it
-        save_folder = f"{os.getcwd()}/saves/{datetime.now().strftime('%Y-%m-%d')}/{db.identifier}/"  # Set the save_folder path
+        # Check if the directory already exists
+        if not os.path.isdir(f"./saves/{str(datetime.now().strftime('%Y-%m-%d'))}/{db.identifier}"):
+
+            # If it doesn't, then make it
+            os.makedirs(f"./saves/{str(datetime.now().strftime('%Y-%m-%d'))}/{db.identifier}")
+
+        # Set the save_folder path
+        save_folder = f"{os.getcwd()}/saves/{datetime.now().strftime('%Y-%m-%d')}/{db.identifier}/"
     elif sys.platform == "win32":
         if not os.path.isdir(f".\\saves\\{str(datetime.now().strftime('%Y-%m-%d'))}\\{db.identifier}\\"):
             os.makedirs(f".\\saves\\{str(datetime.now().strftime('%Y-%m-%d'))}\\{db.identifier}\\")
@@ -43,7 +47,9 @@ def error_handler(frame, error, row_num, colspan=1, display=True):
         font=db.DefaultFont,
         fg='red'
     )
-    if display: db.errorLabel2.grid(row=row_num + 1, column=0, columnspan=colspan)
+    if display:
+        db.errorLabel2.grid(row=row_num + 1, column=0, columnspan=colspan)
+        frame.after(2000, db.errorLabel2.grid_forget)
 
 
 def font_resize(event):
@@ -52,35 +58,6 @@ def font_resize(event):
 
 
 # TITLE: BUTTON FUNCTIONS
-def activate_mental_arithmetic(identifier_widget):
-    db.identifier = identifier_widget.get().strip()
-    if db.identifier == "":
-        db.identifier = "Unknown"
-    db.MainFrame.forget()
-    sr_mental_arithmetic.setup()
-
-def activate_new_mental_arithmetic(identifier_widget):
-    db.identifier = identifier_widget.get().strip()
-    if db.identifier == "":
-        db.identifier = "Unknown"
-    db.MainFrame.forget()
-    sr_mental_arithmetic_new.setup()
-
-
-def activate_stroop(identifier_widget):
-    db.identifier = identifier_widget.get().strip()
-    if db.identifier == "":
-        db.identifier = "Unknown"
-    db.MainFrame.forget()
-    stroop.setup()
-
-
-def activate_nback(identifier_widget):
-    db.identifier = identifier_widget.get().strip()
-    if db.identifier == "":
-        db.identifier = "Unknown"
-    db.MainFrame.forget()
-    nback.setup()
 
 def calibrate(identifier_widget):
     db.identifier = identifier_widget
@@ -90,10 +67,18 @@ def calibrate(identifier_widget):
     calibration.setup()
 
 
-def exit_test(TestFrame, callback_fun):
+def activate_test(test, identifier_widget):
+    db.identifier = identifier_widget.get().strip()
+    if db.identifier == "":
+        db.identifier = "Unknown"
+    db.MainFrame.forget()
+    test.setup()
+
+
+def exit_test(test_frame, callback_fun):
     db.errorLabel1.grid_forget()
     db.errorLabel2.grid_forget()
     if callback_fun is not None:
         callback_fun(wait_for_stop=False)
-    TestFrame.forget()
+    test_frame.forget()
     db.MainFrame.pack()

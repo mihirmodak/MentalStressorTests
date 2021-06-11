@@ -23,6 +23,7 @@ skip_enabled = True
 stop_listening = None
 pronounce = {'two': 2, 'pass': -1}
 
+
 def create_record(save):
     global file
     print("Identifier entered as:" + db.identifier)
@@ -53,7 +54,6 @@ def question():
         for i in str(number):
             intermediate += int(i)
 
-
         a = random.choice(mode)
 
         if a == 'ADDITION':
@@ -66,15 +66,13 @@ def question():
             answer = number * intermediate
             prompt = (str(number) + ", * ")
         elif a == 'DIVISION':
-            temp_answer = number * intermediate
-            answer = number
+            answer = number // intermediate
             prompt = (str(number) + ", ÷ ")
         else:
             raise Exception(prompt)
 
         if num_trials == 0:
-            # TODO: Make the text fill the width/height of the label
-            question_prompt = Label(db.new_mental_arithmetic_frame, text=prompt, width=45, \
+            question_prompt = Label(db.new_mental_arithmetic_frame, text=prompt, width=45,
                                     bg='orange', font=db.GiantFont)
             question_prompt.grid(row=2, column=0, columnspan=2, ipadx=0, sticky=NW)
             # question_prompt.bind("<Button-1>", s.font_resize)
@@ -113,7 +111,8 @@ def start():
         for value in list(db.new_ma_checks.values()):
             selected.append(value.get())
         selected_difficulty = list(db.new_ma_checks.keys())[selected.index(1, 0, 3)]
-        if selected[3] == 1: skip_enabled = True
+        if selected[3] == 1:
+            skip_enabled = True
 
         if selected_difficulty == "EASY":
             num_range = [1, 99]
@@ -162,7 +161,8 @@ def start():
         print("START,      Time Stamp: ", start_time)
 
         # Step 6: Add a timer
-        label_t = Label(db.new_mental_arithmetic_frame, text=f'Time:0.0, Attempts: {2 - num_trials}', font=db.HeadingFont)
+        label_t = Label(db.new_mental_arithmetic_frame, text=f'Time:0.0, Attempts: {2 - num_trials}',
+                        font=db.HeadingFont)
         label_t.grid(row=1, column=0, columnspan=2, pady=50)
 
         # Step 7: Start listening through microphone
@@ -220,7 +220,7 @@ def submit(recognizer, audio):
         except sr.UnknownValueError:
             raise Exception("Sorry, didn't catch that")
         except sr.RequestError as e:
-            raise Exception(f"Couldn't request results from Google Speech Recognition service; {e}")
+            raise Exception(f"Could not request results from Google Speech Recognition service; {e}")
 
         check_label.destroy()
         db.errorLabel1.grid_forget()
@@ -234,7 +234,6 @@ def submit(recognizer, audio):
                 db.errorLabel2.grid_forget()
                 check_label = Label(db.new_mental_arithmetic_frame, text=message, fg='red', font=db.DefaultFont)
                 check_label.grid(row=5, column=0, columnspan=2)
-
 
                 if file is not None:
                     # if db.var == 1:
@@ -266,6 +265,8 @@ def submit(recognizer, audio):
                 file.write("Correct,   Time Stamp: {}\n\n".format(round(time.time() - default_time, 2)))
             print("Correct,    Time Stamp: ", round(time.time() - default_time, 2))
             answer = question()
+
+        db.new_mental_arithmetic_frame.after(2000, check_label.grid_forget)
 
     except Exception as e:
         s.error_handler(db.new_mental_arithmetic_frame, e, 6, 2)

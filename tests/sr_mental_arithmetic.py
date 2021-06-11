@@ -266,6 +266,8 @@ def submit(recognizer, audio):
             print("Correct,    Time Stamp: ", round(time.time() - default_time, 2))
             answer = question()
 
+        db.mental_arithmetic_frame.after(2000, check_label.grid_forget)
+
     except Exception as e:
         s.error_handler(db.mental_arithmetic_frame, e, 6, 2)
 

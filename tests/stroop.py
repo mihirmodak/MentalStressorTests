@@ -49,7 +49,6 @@ def question():
         default_time = time.time()
         db.timer = start_time
 
-
         color = random.choice(options)
 
         if random.random() <= db.congruency_proportion:
@@ -186,7 +185,7 @@ def submit(recognizer, audio):
             print(submitted)
             try:
                 assert submitted in options or submitted == db.skip_keyword or submitted in db.pronounce.values()\
-                or answer1 in db.pronounce.values()
+                    or answer1 in db.pronounce.values()
             except AssertionError:
                 raise Exception("Please say a valid color: Red, Yellow, Blue, or Green.")
         except sr.UnknownValueError:
@@ -242,6 +241,7 @@ def submit(recognizer, audio):
                 print("Correct, Time Stamp: ", round(time.time() - default_time, 2))
 
         answer1, answer2 = question()
+        db.stroop_frame.after(2000, check_label.grid_forget)
 
     except Exception as e:
         s.error_handler(db.stroop_frame, e, 6, 2)
