@@ -41,8 +41,8 @@ def create_record(save):
 
 
 def question():
-    global check_label
-    check_label.grid_forget()
+    # global check_label
+    # check_label.grid_forget()
     try:
         global options, question_prompt, answer1, answer2, default_time, start_time
 

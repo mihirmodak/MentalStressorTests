@@ -1,10 +1,11 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+
 block_cipher = None
 
 
 a = Analysis(['main.py'],
-             pathex=['C:\\Users\\mihir\\Documents\\Lab\\GUI Code'],
+             pathex=['C:\\Users\\mihir\\Files\\Lab\\GUI Code'],
              binaries=[],
              datas=[],
              hiddenimports=[],
