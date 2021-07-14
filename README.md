@@ -20,4 +20,4 @@ from the command line to copy all the code files to your computer. You will need
 
 ## Use
 
-See [DetailedGuide.md](DetailedGuide.md) for an in-depth 
+See [DetailedGuide.md](DetailedGuide.md) for an in-depth walkthrough of this program.
