@@ -75,7 +75,8 @@ def end_program(test_frame):
     global file, stop_listening
     if file is not None:
         file.close()
-    label_t.destroy()
+    if label_t is not None:
+        label_t.destroy()
     s.exit_test(test_frame, stop_listening)
 
 

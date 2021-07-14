@@ -19,7 +19,7 @@ def main():
 
     # Step 2: Ask for subject identifier
     # The label
-    identifier_label_text = "Enter the patient identifier:"
+    identifier_label_text = "Enter the subject identifier:"
     Label(db.MainFrame, text=identifier_label_text, font=db.HeadingFont).grid(row=1)
 
     # The answer box
