@@ -1,4 +1,4 @@
-# Stress Test GUI Documentation
+# ONR Project Stress Test GUI 
 
 ## Description
 
@@ -26,13 +26,19 @@ pip install pyinstaller
 ```
 #### MAKE SURE THAT YOU HAVE ALL THE DEPENDENCIES INSTALLED BEFORE RUNNING THE `CONVERT.BAT` FILE. 
 
-## Dependencies:
+## Dependencies
 
 - Numpy
 - Tkinter
 - PyAudio
+    - To install this (at least on Windows, unknown about Linux/MacOS), you need to manaully download the wheel (.whl) file and use pip to install it. 
+    - These files can be found at [https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio](https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio). 
+    - You will need to find the appropriate file for your specific version of Python. 
+    For example, `PyAudio‑0.2.11‑cp39‑cp39‑win_amd64.whl` will work on Python 3.9 (`cp39`) on 64-bit devices (`win_amd64`).
 - SpeechRecognition
-- More (To Be Updated Later)
+- PyInstaller
+
+These are only required if you are going to run the `convert.bat` or `convert.sh` files. The .exe file should have packaged versions of all the dependencies included within it (under normal curcumstances).
 
 ## Use
 

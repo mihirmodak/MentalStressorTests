@@ -4,6 +4,7 @@ from tkinter import *
 from tkinter import ttk
 from tkinter.font import Font
 import speech_recognition as sr
+import time
 
 # TITLE: INITIALIZE ROOT
 root = Tk()
@@ -38,6 +39,7 @@ save_folder = ''
 errorLabel1 = Label() # necessary to display errors on multiple lines
 errorLabel2 = Label() # necessary to display errors on multiple lines
 timer = None
+global_start_time = time.time()
 
 # TITLE: SPEECH_RECOGNITION
 microphone, recognizer = sr.Microphone(), sr.Recognizer()

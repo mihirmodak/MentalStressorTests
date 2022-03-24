@@ -22,6 +22,7 @@ default_time, start_time = None, None
 skip_enabled = True
 stop_listening = None
 pronounce = {'two': 2, 'pass': -1}
+err_msg = None
 
 
 def create_record(save):
@@ -31,8 +32,10 @@ def create_record(save):
         if save:
             db.save_folder = s.create_save_path()
             filename = str(db.save_folder) + "new_mental_arithmetic.txt"
+            print(filename)
             file = open(filename, "a+")
         else:
+            file = None
             return None
     except Exception as e:
         s.error_handler(db.new_ma_setup_frame, e, 5)
@@ -150,15 +153,15 @@ def start():
         num_trials = 0
         answer = question()
         default_time = time.time()
-        start_time = round(time.time() - default_time, 2)
+        start_time = round(time.time(), 2)
         db.timer = start_time
 
         # Step 5: Start writing test difficulty data to the save files
         if file is not None:
             file.write(selected_difficulty + ' ' + str(mode) + '\n')
-            file.write("START,     Time Stamp: {}\n".format(start_time))
-        print(selected_difficulty, mode[0:])
-        print("START,      Time Stamp: ", start_time)
+            file.write("START, Time Stamp: {}\n".format(start_time - db.global_start_time)) # seems redundant but start_time used to be a different variable
+        print(selected_difficulty, mode[0:]) # and also hard coding 0.00 intuitively seems to be a bad idea but i cna't explain why
+        print("START, Time Stamp: ", start_time - db.global_start_time)
 
         # Step 6: Add a timer
         label_t = Label(db.new_mental_arithmetic_frame, text=f'Time:0.0, Attempts: {2 - num_trials}',
@@ -194,7 +197,7 @@ def start():
 
 
 def submit(recognizer, audio):
-    global answer, check_label, file, default_time, num_trials
+    global answer, check_label, file, default_time, num_trials, err_msg
 
     if num_trials == 1:
         check_label = Label(db.stroop_frame, text="Thinking...", fg='black', font=db.DefaultFont)
@@ -216,11 +219,18 @@ def submit(recognizer, audio):
                 else:
                     submitted = int(submitted)
             except ValueError:
-                raise Exception("I can only understand numbers. Please repeat your answer.")
+                err_msg = "I can only understand numbers. Please repeat your answer."
+                raise Exception(err_msg)
         except sr.UnknownValueError:
-            raise Exception("Sorry, didn't catch that")
+            err_msg = "Sorry, didn't catch that"
+            raise Exception(err_msg)
         except sr.RequestError as e:
-            raise Exception(f"Could not request results from Google Speech Recognition service; {e}")
+            err_msg = f"Could not request results from Google Speech Recognition service; {e}"
+            raise Exception(err_msg)
+
+        if err_msg is not None:
+            if file is not None:
+                file.write(f"Error: {err_msg}, Time Stamp: {round(time.time() - db.global_start_time, 2)}\n\n")
 
         check_label.destroy()
         db.errorLabel1.grid_forget()
@@ -237,8 +247,8 @@ def submit(recognizer, audio):
 
                 if file is not None:
                     # if db.var == 1:
-                    file.write("Wrong,      Time Stamp: {}\n\n".format(round(time.time() - default_time, 2)))
-                print("Wrong,      Time Stamp: ", round(time.time() - default_time, 2))
+                    file.write("Wrong, Time Stamp: {}\n\n".format(round(time.time() - db.global_start_time, 2)))
+                print("Wrong, Time Stamp: ", round(time.time() - db.global_start_time, 2))
 
                 if num_trials >= 2:
                     answer = question()
@@ -262,8 +272,8 @@ def submit(recognizer, audio):
             check_label.grid(row=5, column=0, columnspan=2)
 
             if file is not None:
-                file.write("Correct,   Time Stamp: {}\n\n".format(round(time.time() - default_time, 2)))
-            print("Correct,    Time Stamp: ", round(time.time() - default_time, 2))
+                file.write("Correct, Time Stamp: {}\n\n".format(round(time.time() - db.global_start_time, 2)))
+            print("Correct, Time Stamp: ", round(time.time() - db.global_start_time, 2))
             answer = question()
 
         db.new_mental_arithmetic_frame.after(2000, check_label.grid_forget)

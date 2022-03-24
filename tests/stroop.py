@@ -24,6 +24,7 @@ stop_listening = None
 problematic_nums = {
     'two': 2
 }
+err_msg = None
 
 
 def create_record(save):
@@ -169,7 +170,7 @@ def start():
 
 
 def submit(recognizer, audio):
-    global answer1, answer2, check_label, file, default_time, options, num_trials
+    global answer1, answer2, check_label, file, default_time, options, num_trials, err_msg
 
     if num_trials == 1:
         check_label = Label(db.stroop_frame, text="Thinking...", fg='black', font=db.DefaultFont)
@@ -188,11 +189,18 @@ def submit(recognizer, audio):
                 assert submitted in options or submitted == db.skip_keyword or submitted in db.pronounce.values()\
                     or answer1 in db.pronounce.values()
             except AssertionError:
-                raise Exception("Please say a valid color: Red, Yellow, Blue, or Green.")
+                err_msg = "Please say a valid color: Red, Yellow, Blue, or Green"
+                raise Exception(err_msg)
         except sr.UnknownValueError:
-            raise Exception("Sorry, didn't catch that")
+            err_msg = "Sorry, didn't catch that"
+            raise Exception(err_msg)
         except sr.RequestError as e:
-            raise Exception(f"Couldn't request results from Google Speech Recognition service; {e}")
+            err_msg = f"Could not request results from Google Speech Recognition service; {e}"
+            raise Exception(err_msg)
+
+        if err_msg is not None:
+            if file is not None:
+                file.write(f"Error: {err_msg}, Time Stamp: {round(time.time() - db.global_start_time, 2)}\n\n")
 
         if submitted == db.skip_keyword:
             message = f"Question Skipped"
@@ -207,8 +215,8 @@ def submit(recognizer, audio):
 
             if file is not None:
                 # if db.var == 1:
-                file.write("Skipped, Time Stamp: {}\n\n".format(round(time.time() - default_time, 2)))
-            print("Skipped, Time Stamp: ", round(time.time() - default_time, 2))
+                file.write("Skipped, Time Stamp: {}\n\n".format(round(time.time() - db.global_start_time, 2)))
+            print("Skipped, Time Stamp: ", round(time.time() - db.global_start_time, 2))
             pass
         else:
             if submitted.lower() not in [answer1.lower(), answer2.lower()]:
@@ -224,8 +232,8 @@ def submit(recognizer, audio):
 
                 if file is not None:
                     # if db.var == 1:
-                    file.write("Wrong, Time Stamp: {}\n\n".format(round(time.time() - default_time, 2)))
-                print("Wrong, Time Stamp: ", round(time.time() - default_time, 2))
+                    file.write("Wrong, Time Stamp: {}\n\n".format(round(time.time() - db.global_start_time, 2)))
+                print("Wrong, Time Stamp: ", round(time.time() - db.global_start_time, 2))
 
             else:
                 message = f"Correct"
@@ -238,8 +246,8 @@ def submit(recognizer, audio):
                     check_label.config(text=message, fg='green')
 
                 if file is not None:
-                    file.write("Correct, Time Stamp: {}\n\n".format(round(time.time() - default_time, 2)))
-                print("Correct, Time Stamp: ", round(time.time() - default_time, 2))
+                    file.write("Correct, Time Stamp: {}\n\n".format(round(time.time() - db.global_start_time, 2)))
+                print("Correct, Time Stamp: ", round(time.time() - db.global_start_time, 2))
 
         answer1, answer2 = question()
         db.stroop_frame.after(2000, check_label.grid_forget)

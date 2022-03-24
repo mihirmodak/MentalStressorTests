@@ -1,3 +1,4 @@
+from email.policy import default
 from tkinter import *
 import variables as db
 import settings as s
@@ -14,6 +15,7 @@ answer1, answer2, question_prompt, prev_nums = None, None, None, []
 check_label = Label(db.nback_frame, font=db.DefaultFont)
 default_time, start_time = None, None
 problematic_nums = {'two': 2}
+err_msg = None
 
 
 def create_record(save):
@@ -73,7 +75,7 @@ def question():
 
 
 def submit(recognizer, audio):
-    global answer1, answer2, check_label, file, default_time, num_trials
+    global answer1, answer2, check_label, file, default_time, num_trials, err_msg
 
     if num_trials == 1:
         check_label = Label(db.nback_frame, text="Thinking...", fg='black', font=db.DefaultFont)
@@ -95,11 +97,18 @@ def submit(recognizer, audio):
                 else:
                     submitted = int(submitted)
             except ValueError:
-                raise Exception("I can only understand numbers. Please repeat your answer.")
+                err_msg = "I can only understand numbers. Please repeat your answer."
+                raise Exception(err_msg)
         except sr.UnknownValueError:
-            raise Exception("Sorry, didn't catch that")
+            err_msg = "Sorry, didn't catch that"
+            raise Exception(err_msg)
         except sr.RequestError as e:
-            raise Exception(f"Couldn't request results from Google Speech Recognition service; {e}")
+            err_msg = f"Could not request results from Google Speech Recognition service; {e}"
+            raise Exception(err_msg)
+
+        if err_msg is not None:
+            if file is not None:
+                file.write(f"Error: {err_msg}, Time Stamp: {round(time.time() - db.global_start_time, 2)}\n\n")
 
         check_label.grid_forget()
         if submitted == db.skip_keyword:
@@ -115,8 +124,8 @@ def submit(recognizer, audio):
 
             if file is not None:
                 # if db.var == 1:
-                file.write("Skipped,{}, Time Stamp: {}\n\n".format(submitted, round(time.time() - default_time, 2)))
-            print(f"Skipped,{submitted} Time Stamp: {round(time.time() - default_time, 2)}")
+                file.write("Skipped,{}, Time Stamp: {}\n\n".format(submitted, round(time.time() - db.global_start_time, 2)))
+            print(f"Skipped,{submitted} Time Stamp: {round(time.time() - db.global_start_time, 2)}")
             print(prev_nums)
             pass
         else:
@@ -130,8 +139,8 @@ def submit(recognizer, audio):
 
                     if file is not None:
                         # if db.var == 1:
-                        file.write("Wrong,{}, Time Stamp: {}\n\n".format(submitted, round(time.time() - default_time, 2)))
-                    print(f"Wrong,{submitted},{answer1, answer2},Time Stamp: {round(time.time() - default_time, 2)}")
+                        file.write("Wrong,{}, Time Stamp: {}\n\n".format(submitted, round(time.time() - db.global_start_time, 2)))
+                    print(f"Wrong,{submitted},{answer1, answer2},Time Stamp: {round(time.time() - db.global_start_time, 2)}")
                 else:
                     message = "Question skipped."
                     db.errorLabel1.grid_forget()
@@ -149,8 +158,8 @@ def submit(recognizer, audio):
 
 
                 if file is not None:
-                    file.write("Correct,{},Time Stamp: {}\n\n".format(submitted, round(time.time() - default_time, 2)))
-                print(f"Correct,{submitted},Time Stamp: {round(time.time() - default_time, 2)}")
+                    file.write("Correct,{},Time Stamp: {}\n\n".format(submitted, round(time.time() - db.global_start_time, 2)))
+                print(f"Correct,{submitted},Time Stamp: {round(time.time() - db.global_start_time, 2)}")
 
         answer1, answer2 = question()
         db.nback_frame.after(2000, check_label.grid_forget)
