@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html theme="light">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Mental Stressor Tests GUI</title>
+    <meta
+      name="description"
+      content="An intuitive GUI built to conduct cognitive stress tests during human subject studies, designed to induce mental stress through various tasks. Ideal for wearable technology research and real-time stress monitoring."
+    />
+
+    <!-- Settings for the whole document -->
+    <base target="_blank" />
+
+    <!-- Add Page Icons -->
+    <link rel="icon" type="image/x-icon" href="resources/logo.png" />
+    <link rel="apple-touch-icon" href="resources/logo.png" />
+
+    <!-- MathJax JavaScript -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
+
+    <!-- CSS -->
+    <link rel="preload" href="styles/styles.css" as="style" />
+    <link rel="stylesheet" href="styles/styles.css" />
+    <link rel="preload" href="styles/tags.css" as="style" />
+    <link rel="stylesheet" href="styles/tags.css" />
+    <link rel="preload" href="styles/classes.css" as="style" />
+    <link rel="stylesheet" href="styles/classes.css" />
+
+    <style data-href="https://fonts.googleapis.com/css2?family=Inter:wght@40;50;60;70;80;900&amp;display=swap">
+      @font-face {
+        font-family: "Inter";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url(https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfMZs.woff)
+          format("woff");
+      }
+      @font-face {
+        font-family: "Inter";
+        font-style: normal;
+        font-weight: 500;
+        font-display: swap;
+        src: url(https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuI6fMZs.woff)
+          format("woff");
+      }
+      @font-face {
+        font-family: "Inter";
+        font-style: normal;
+        font-weight: 600;
+        font-display: swap;
+        src: url(https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuGKYMZs.woff)
+          format("woff");
+      }
+      @font-face {
+        font-family: "Inter";
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap;
+        src: url(https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuFuYMZs.woff)
+          format("woff");
+      }
+      @font-face {
+        font-family: "Inter";
+        font-style: normal;
+        font-weight: 800;
+        font-display: swap;
+        src: url(https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuDyYMZs.woff)
+          format("woff");
+      }
+      @font-face {
+        font-family: "Inter";
+        font-style: normal;
+        font-weight: 900;
+        font-display: swap;
+        src: url(https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuBWYMZs.woff)
+          format("woff");
+      }
+    </style>
+
+  </head>
+
+  <body class="vscode-body vscode-light">
+
+    <!-- Page Title -->
+    <p class="title">A GUI for Mental Stressor Tests</p>
+
+    <!-- Author Info -->
+    <p class="metadata">Mihir Modak • March 24, 2022 • Python</p>
+
+    <!-- Cover Image -->
+    <div contenteditable="false" style="display: flex; justify-content: center">
+      <img
+        alt=""
+        src="resources/Mental Stressor GUI.gif"
+        decoding="async"
+        loading="lazy"
+      />
+    </div>
+
+    <!-- Description Section -->
+    <article id="description">
+      <h2>Description</h2>
+      <p>
+        This GUI is intended to be used to conduct cognitive stress tests. The GUI
+        contains some cognitive stress tasks designed to induce stress in a
+        subject performing that task.
+      </p>
+      <p>
+        The GUI was developed in Python using the Tkinter library, and was
+        exported to an executable file using the PyInstaller tool.
+      </p>
+    </article>
+
+    <!-- Use Section -->
+    <article id="use">
+      <h2>Use</h2>
+      <p>
+        When the program is first run, the main menu will display. There are 2
+        requirements that should be fulfilled before beginning any tests:
+      </p>
+      <p>
+        <img
+          src="file:////Users/mihir/Library/CloudStorage/OneDrive-Personal/Programs/MentalStressorTests/images/main_menu.jpg"
+          alt="Image: Main Menu"
+        />
+      </p>
+      <ol>
+        <li>
+          A subject identifier, e.g., subject name or ID number, must be entered
+          into the text box at the top. The program then uses this identifier to
+          save the test response data (correctness of the answer and time taken by
+          subject). This data is separate from the AcqKnowledge data collected
+          from sensors.
+        </li>
+      </ol>
+      <p>
+        If the patient identifier is not entered, the program defaults to a value
+        of 'Unknown.' This could cause the test response data for multiple
+        subjects to be saved into the same location on the computer, making it
+        difficult to differentiate the test response data of different subjects.
+        The AcqKnowledge sensor data is not affected by this.
+      </p>
+      <ol start="2">
+        <li>
+          A calibration procedure must be completed to help prevent any errors in
+          the speech recognition algorithm used to detect the subject's answers.
+        </li>
+      </ol>
+      <p>
+        After these two requirements have been fulfilled, all the tests will work
+        properly.
+      </p>
+      <p>There are four tests / tasks included in this program:</p>
+      <ul>
+        <li>a 1-step mental arithmetic task</li>
+        <li>a 2-step mental arithmetic task</li>
+        <li>an n-back test</li>
+        <li>a Stroop color test</li>
+      </ul>
+      <p>
+        The procedures for each of these tests will be explained in the following
+        sections.
+      </p>
+    </article>
+
+    <!-- Calibration Procedure -->
+    <article id="calibration-procedure">
+      <h2>Calibration Procedure</h2>
+      <p>
+        The calibration procedure allows the speech recognition algorithm to
+        correctly recognize how the subject pronounces various numbers and colors
+        before the tests begin.
+      </p>
+      <p>
+        The program then evaluates this calibration input, and uses the
+        subject-specific pronunciations to help improve the accuracy of the speech
+        recognition during the tests/tasks.
+      </p>
+      <p>
+        To begin calibration, click on the appropriate button in the main menu.
+        This will open the calibration setup menu.
+      </p>
+      <p>
+        <img
+          src="file:////Users/mihir/Library/CloudStorage/OneDrive-Personal/Programs/MentalStressorTests/images/calibration_menu.jpg"
+          alt="Image: Calibration Setup Menu"
+        />
+      </p>
+      <p>
+        Any number of the checkboxes can be selected to run the calibration for
+        those specific types of inputs.
+      </p>
+      <p>The NUMBERS checkbox allows for the calibration of digits 0-9.</p>
+      <p>
+        The COLORS checkbox allows for the calibration of the four colors used in
+        the Stroop Color test: Orange, Blue, Yellow, and Green.
+      </p>
+      <p>
+        The SKIP checkbox allows for the calibration of the skip keyword (in the
+        actual test, it enables the subject to say the word &quot;skip&quot; in
+        order to skip a particular question without it being marked incorrect).
+      </p>
+      <p>
+        The dropdown menu below these checkboxes allows the program to work with
+        various accents and dialects of English, such as dialects from the UK,
+        India, and South Africa.
+      </p>
+      <p>
+        Once you have selected the necessary options, press the &quot;Start
+        Test&quot; button to begin the calibration procedure.
+      </p>
+      <p>
+        <img
+          src="file:////Users/mihir/Library/CloudStorage/OneDrive-Personal/Programs/MentalStressorTests/images/calibration.jpg"
+          alt="Image: Calibration In Progress"
+        />
+      </p>
+      <p>
+        The program will display various prompts (e.g. number 0-9, or colors such
+        as &quot;yellow&quot;) and record everything the subject says. To prevent
+        the subject from saying the same word twice the program displays a
+        &quot;Thinking...&quot; status as soon as it hears the subject speak.
+      </p>
+      <p>
+        Once all the prompts are calibrated, the program automatically exits to
+        the main menu.
+      </p>
+    </article>
+
+    <!-- 1-Step Mental Arithmetic -->
+    <article id="1-step-mental-arithmetic">
+      <h2>1-Step Mental Arithmetic</h2>
+      <p>
+        The first of the four tests in this GUI is the 1-Step Mental Arithmetic
+        task. This task generates arithmetic problems of varying difficulty (with
+        varying arithmetic operations) and listens for the subject to provide an
+        answer. The Correct / Incorrect output as well as the time taken for the
+        question is then automatically written to a text file.
+      </p>
+      <p>
+        To set up the 1-Step Mental Arithmetic task, click on the appropriate
+        button in the main menu to bring up the following menu:
+      </p>
+      <p>
+        <img
+          src="file:////Users/mihir/Library/CloudStorage/OneDrive-Personal/Programs/MentalStressorTests/images/1step_ma_menu.jpg"
+          alt="Image: 1-Step Mental Math Menu"
+        />
+      </p>
+      <p>
+        The &quot;EASY&quot; difficulty gives two digits between 1-10 to add,
+        subtract, multiply, or divide. The &quot;MEDIUM&quot; difficulty gives one
+        digit between 1-10 and another digit between 11-99to add, subtract,
+        multiply, or divide. Finally, the &quot;HARD&quot; difficulty gives two
+        digits between 11-99 to add, subtract, multiply, or divide.
+      </p>
+      <p>
+        The &quot;SKIP&quot; box allows the subject to say the skip keyword to
+        move to the next question in the task without being marked incorrect.
+      </p>
+      <p>
+        The possible arithmetic operators can also be selected at this stage. For
+        example, if only the &quot;MULTIPLICATION&quot; box is selected, then the
+        program will provide two numbers and ask the subject to provide their
+        product. If multiple such operators are selected, then the program decides
+        on an operator randomly.
+      </p>
+      <p>
+        Once all the appropriate parameters are selected, the 'Start Test' button
+        can be used to begin the task.
+      </p>
+      <p>
+        <img
+          src="file:////Users/mihir/Library/CloudStorage/OneDrive-Personal/Programs/MentalStressorTests/images/1step_ma.jpg"
+          alt="Image: 1-Step Mental Math In Progress"
+        />
+      </p>
+      <p>
+        The program then begins displaying arithmetic problems, highlighted by an
+        orange box. The subject has two attempts to give a correct answer.
+      </p>
+      <p>
+        If the correct answer is given, the program displays the word
+        &quot;Correct&quot; in green and moves to the next question. If an
+        incorrect answer is heard, the program displays the word &quot;Wrong&quot;
+        in red text, similar to the &quot;Correct&quot; prompt. Two such
+        &quot;Wrong&quot; attempts are allowed before the program moves to the
+        next question.
+      </p>
+      <p>
+        Once the user (e.g., a person controlling the software and 'administering'
+        the tests) wants to exit the task, the red X button can be pressed to
+        close the task and reopen the main menu.
+      </p>
+    </article>
+
+    <!-- 2-Step Mental Arithmetic -->
+    <article id="2-step-mental-arithmetic">
+      <h2>2-Step Mental Arithmetic</h2>
+      <p>
+        The second of the four tests in this GUI is the 2-Step Mental Arithmetic
+        task. This task generates arithmetic problems of varying difficulty (and
+        varying arithmetic operations), and listens for the subject to provide an
+        answer. The Correct / Incorrect output as well as the time taken for the
+        question is then automatically written to a text file.
+      </p>
+      <p>
+        To set up the 2-Step Mental Arithmetic task, click on the appropriate
+        button in the main menu to bring up the following menu:
+      </p>
+      <p>
+        <img
+          src="file:////Users/mihir/Library/CloudStorage/OneDrive-Personal/Programs/MentalStressorTests/images/2step_ma_menu.jpg"
+          alt="Image: 2-Step Mental Math Menu"
+        />
+      </p>
+      <p>
+        This menu is identical to the menu for the 1-Step Mental Arithmetic. The
+        &quot;Easy&quot; difficulty gives a two-digit number. The
+        &quot;Medium&quot; difficulty gives a three-digit number. The
+        &quot;Hard&quot; difficulty gives a four-digit number. These problems are
+        designed to be completed in two steps. First, the subject is asked to take
+        the displayed number and add its digits together to get a new number. The
+        subject should then take this new number and add, subtract, multiply, or
+        divide it to the original number, based on the shown arithmetic sign. This
+        results in a final answer.
+      </p>
+      <p>
+        The &quot;SKIP&quot; box allows the subject to say the skip keyword to
+        move to another question in the task without being marked incorrect.
+      </p>
+      <p>
+        The possible arithmetic operators can also be selected at this stage. For
+        example, if only the &quot;MULTIPLICATION&quot; box is selected, then the
+        program will provide one number and ask the subject to provide their
+        product. On the other hand, if multiple such operators are selected, the
+        program randomly decides on an operator.
+      </p>
+      <p>
+        Once all the appropriate parameters are selected, the 'Start Test' button
+        can be used to begin the task.
+      </p>
+      <p>
+        <img
+          src="file:////Users/mihir/Library/CloudStorage/OneDrive-Personal/Programs/MentalStressorTests/images/2step_ma.jpg"
+          alt="Image: 2-Step Mental Math In Progress"
+        />
+      </p>
+      <p>
+        The program then begins displaying arithmetic problems, highlighted by an
+        orange box. The subject has two attempts to give a correct answer. The
+        subject should only say the final answer out loud, and it will be recorded
+        using speech recognition. For example, the GUI prints the number
+        &quot;123&quot; and the sign &quot;+&quot;. The subject should add the
+        digits to get 1+2+3 = 6, regardless of whether the GUI prints a
+        &quot;+&quot; or a &quot;-&quot; sign. Then, the subject should add this
+        to the original number to get 123+6 = 129. Finally, the subject should say
+        the number &quot;129&quot; out loud.
+      </p>
+      <p>
+        If the correct answer is given, the program displays the word
+        &quot;Correct&quot; in green and moves to the next question. If an
+        incorrect answer is heard, the program displays the word &quot;Wrong&quot;
+        in red text, similar to the &quot;Correct&quot; prompt. Two such
+        &quot;Wrong&quot; attempts are allowed before the program moves to the
+        next question.
+      </p>
+      <p>
+        Once the user wants to exit the task, the red X button can be pressed to
+        close the task and reopen the main menu.
+      </p>
+    </article>
+
+    <!-- N-Back Test -->
+    <article id="n-back-test">
+      <h2>N-Back Test</h2>
+      <p>
+        The third test in this GUI is the N-back test. This test displays numbers
+        in sequence, and tests the subject's short-term recall by asking the
+        subject to say previous numbers in the sequence as new numbers are
+        displayed. The program can also add to the difficulty by setting a time
+        limit for each number in the sequence.
+      </p>
+      <p>
+        To begin the setup for this test, click the appropriate button on the main
+        menu.
+      </p>
+      <p>
+        <img
+          src="file:////Users/mihir/Library/CloudStorage/OneDrive-Personal/Programs/MentalStressorTests/images/nback_menu.jpg"
+          alt="Image: N-Back Test Setup Menu"
+        />
+      </p>
+      <p>
+        The setup menu for the n-back test provides options for the time limit for
+        each number in the sequence, as well as for the number of steps back the
+        subject has to keep in their memory.
+      </p>
+      <p>
+        Once all the necessary options have been selected, the test can be started
+        using the 'Start Test' button.
+      </p>
+      <p>
+        <img
+          src="file:////Users/mihir/Library/CloudStorage/OneDrive-Personal/Programs/MentalStressorTests/images/nback.jpg"
+          alt="Image: N-Back Test In Progress"
+        />
+      </p>
+      <p>
+        The GUI will print a number on the screen. The subject should remember
+        this number, as she/he will need to say it out loud after one, two, or
+        three steps. 3, 5, or 7 seconds later (depending on the chosen time
+        limit), the GUI will print a new number. The subject must remember this
+        number as well. This process repeats, generating a new number each time.
+      </p>
+      <p>
+        Using speech recognition, the GUI will interpret the words spoken into the
+        microphone.
+      </p>
+      <p>
+        If &quot;1-back&quot; was chosen, the subject should say the previous
+        number (the number that showed up one step ago) out loud. If
+        &quot;2-back&quot; was chosen, the subject should say the number that
+        showed up two steps ago, and if &quot;3-back&quot; was chosen, the subject
+        should say the number that showed up three steps ago.
+      </p>
+      <p>
+        If the number spoken matches the correct previous number, the GUI displays
+        the word &quot;Correct&quot; and moves on. If the number spoken doesn't
+        match, or the subject takes too much time, the GUI says
+        &quot;incorrect&quot; and moves on. For example, assume 2-back, 5 seconds
+        was chosen.
+      </p>
+      <ol>
+        <li>The GUI prints a number, &quot;8&quot;.</li>
+        <li>Five seconds later, the GUI prints a new number, &quot;5&quot;.</li>
+        <li>
+          Five seconds later, the GUI prints a new number, &quot;3&quot;. At this
+          point, the subject must say the number that appeared two steps ago,
+          which is &quot;8&quot;.
+        </li>
+        <li>
+          The GUI prints a new number, &quot;7&quot;. At this point, the subject
+          must say the number that appeared two steps ago, which is &quot;5&quot;.
+        </li>
+      </ol>
+      <p>
+        Once the user wants to exit the task, the red X button can be pressed to
+        close the task and reopen the main menu.
+      </p>
+    </article>
+
+    <!-- Stroop Color Test -->
+    <article id="stroop-color-test">
+      <h2>Stroop Color Test</h2>
+      <p>
+        The final test in the program is the Stroop color test. This test displays
+        color names in randomly chosen text colors, and asks the subject to say
+        out loud the color of the word instead of the meaning of the word.
+      </p>
+      <p>
+        To begin the setup of this test, click on the &quot;Stroop Color
+        Test&quot; button in the main menu.
+      </p>
+      <p>
+        <img
+          src="file:////Users/mihir/Library/CloudStorage/OneDrive-Personal/Programs/MentalStressorTests/images/stroop_menu.jpg"
+          alt="Image: Stroop Color Test Setup Menu"
+        />
+      </p>
+      <p>
+        There are three difficulty options available for this test, which control
+        the proportion of 'congruent' questions the program generates. Congruent
+        questions are questions where the color of the text matches the meaning of
+        the word. For example, the word &quot;GREEN&quot; in green-colored text
+        would be a congruent question.
+      </p>
+      <p>
+        Once the difficulty has been selected, the test can be started using the
+        &quot;Start Test&quot; button.
+      </p>
+      <p>
+        The program displays a color name (in this case, &quot;yellow&quot;) in a
+        particular color text (in this case, blue). This is highlighted by a grey
+        box to add contrast in comparison to lighter colors like yellow and
+        orange.
+      </p>
+      <p>
+        The subject should then say the color (blue) instead of the meaning on the
+        color name (yellow). The program then displays the word
+        &quot;Correct&quot; if the spoken answer matches with the text's color and
+        &quot;Wrong&quot; if not.
+      </p>
+      <p>
+        <img
+          src="file:////Users/mihir/Library/CloudStorage/OneDrive-Personal/Programs/MentalStressorTests/images/stroop.jpg"
+          alt="Image: Stroop Color Test In Progress"
+        />
+      </p>
+      <p>
+        Once the user wants to exit the task, the red X button can be pressed to
+        close the task and reopen the main menu.
+      </p>
+    </article>
+
+    <!-- Hidden span used to calculate text width -->
+    <span id="text-width-calculator"></span>
+
+    <script>
+      function adjustLastLineAlignment() {
+          const paragraphs = document.querySelectorAll('p');
+          const calculator = document.getElementById('text-width-calculator');
+
+          paragraphs.forEach((paragraph) => {
+              const text = paragraph.textContent;
+              const paragraphWidth = paragraph.clientWidth;
+
+              // Split the text by spaces to simulate word wrapping
+              const words = text.split(' ');
+              let currentLine = '';
+              let lines = [];
+
+              // Simulate wrapping of words by iterating through them
+              for (let word of words) {
+                  calculator.textContent = currentLine + word + ' ';
+                  const lineWidth = calculator.offsetWidth;
+
+                  if (lineWidth < paragraphWidth) {
+                      currentLine += word + ' ';
+                  } else {
+                      lines.push(currentLine.trim());
+                      currentLine = word + ' ';
+                  }
+              }
+
+              // Push the last line
+              lines.push(currentLine.trim());
+
+              // Measure the width of the last line
+              calculator.textContent = lines[lines.length - 1];
+              const lastLineWidth = calculator.offsetWidth;
+
+              // If the last line is more than 100px shorter than the paragraph width, align it left
+              if (paragraphWidth - lastLineWidth > 50) {
+                  paragraph.style.textAlignLast = 'left';
+              } else {
+                  paragraph.style.textAlignLast = 'justify';
+              }
+          });
+      }
+
+      // Run the function when the content loads or when the window resizes
+      window.addEventListener('load', adjustLastLineAlignment);
+      window.addEventListener('resize', adjustLastLineAlignment);
+  </script>
+
+  </body>
+</html>
