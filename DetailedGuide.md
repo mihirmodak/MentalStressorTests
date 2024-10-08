@@ -13,7 +13,7 @@ tool.
 When the program is first run, the main menu will display. There are 2 requirements that should be fulfilled before 
 beginning any tests:
 
-![Image: Main Menu](images/main_menu.jpg) 
+![Image: Main Menu](docs/resources//main_menu.jpg) 
 
 1. A subject identifier, e.g., subject name or ID number, must be entered into the text box at the top. The program then
  uses this identifier to save the test response data (correctness of the answer and time taken by subject). This data is
@@ -48,7 +48,7 @@ accuracy of the speech recognition during the tests/tasks.
 
 To begin calibration, click on the appropriate button in the main menu. This will open the calibration setup menu.
 
-![Image: Calibration Setup Menu](images/calibration_menu.jpg)
+![Image: Calibration Setup Menu](docs/resources//calibration_menu.jpg)
 
 Any number of the checkboxes can be selected to run the calibration for those specific types of inputs.
 
@@ -65,7 +65,7 @@ as dialects from the UK, India, and South Africa.
 
 Once you have selected the necessary options, press the &quot;Start Test&quot; button to begin the calibration procedure.
 
-![Image: Calibration In Progress](images/calibration.jpg)
+![Image: Calibration In Progress](docs/resources//calibration.jpg)
 
 The program will display various prompts (e.g. number 0-9, or colors such as &quot;yellow&quot;) and record everything 
 the subject says. To prevent the subject from saying the same word twice the program displays a &quot;Thinking...&quot; 
@@ -83,7 +83,7 @@ The first of the four tests in this GUI is the 1-Step Mental Arithmetic task. Th
 To set up the 1-Step Mental Arithmetic task, click on the appropriate button in the main menu to bring up the following 
 menu:
 
-![Image: 1-Step Mental Math Menu](images/1step_ma_menu.jpg)
+![Image: 1-Step Mental Math Menu](docs/resources//1step_ma_menu.jpg)
 
 The &quot;EASY&quot; difficulty gives two digits between 1-10 to add, subtract, multiply, or divide. The 
 &quot;MEDIUM&quot; difficulty gives one digit between 1-10 and another digit between 11-99to add, subtract, multiply, or
@@ -98,7 +98,7 @@ their product. If multiple such operators are selected, then the program decides
 
 Once all the appropriate parameters are selected, the &#39;Start Test&#39; button can be used to begin the task.
 
-![Image: 1-Step Mental Math In Progress](images/1step_ma.jpg )
+![Image: 1-Step Mental Math In Progress](docs/resources//1step_ma.jpg )
 
 The program then begins displaying arithmetic problems, highlighted by an orange box. The subject has two attempts to 
 give a correct answer.
@@ -121,7 +121,7 @@ of varying difficulty (and varying arithmetic operations), and listens for the s
 To set up the 2-Step Mental Arithmetic task, click on the appropriate button in the main menu to bring up the following 
 menu:
 
-![Image: 2-Step Mental Math Menu](images/2step_ma_menu.jpg)
+![Image: 2-Step Mental Math Menu](docs/resources//2step_ma_menu.jpg)
 
 This menu is identical to the menu for the 1-Step Mental Arithmetic. The &quot;Easy&quot; difficulty gives a two-digit 
 number. The &quot;Medium&quot; difficulty gives a three-digit number. The &quot;Hard&quot; difficulty gives a four-digit
@@ -138,7 +138,7 @@ their product. On the other hand, if multiple such operators are selected, the p
 
 Once all the appropriate parameters are selected, the &#39;Start Test&#39; button can be used to begin the task.
 
-![Image: 2-Step Mental Math In Progress](images/2step_ma.jpg)
+![Image: 2-Step Mental Math In Progress](docs/resources//2step_ma.jpg)
 
 The program then begins displaying arithmetic problems, highlighted by an orange box. The subject has two attempts to 
 give a correct answer. The subject should only say the final answer out loud, and it will be recorded using speech 
@@ -163,14 +163,14 @@ program can also add to the difficulty by setting a time limit for each number i
 
 To begin the setup for this test, click the appropriate button on the main menu.
 
-![Image: N-Back Test Setup Menu](images/nback_menu.jpg)
+![Image: N-Back Test Setup Menu](docs/resources//nback_menu.jpg)
 
 The setup menu for the n-back test provides options for the time limit for each number in the sequence, as well as for 
 the number of steps back the subject has to keep in their memory.
 
 Once all the necessary options have been selected, the test can be started using the &#39;Start Test&#39; button.
 
-![Image: N-Back Test In Progress](images/nback.jpg)
+![Image: N-Back Test In Progress](docs/resources//nback.jpg)
 
 The GUI will print a number on the screen. The subject should remember this number, as she/he will need to say it out 
 loud after one, two, or three steps. 3, 5, or 7 seconds later (depending on the chosen time limit), the GUI will print a
@@ -203,7 +203,7 @@ and asks the subject to say out loud the color of the word instead of the meanin
 
 To begin the setup of this test, click on the &quot;Stroop Color Test&quot; button in the main menu.
 
-![Image: Stroop Color Test Setup Menu](images/stroop_menu.jpg)
+![Image: Stroop Color Test Setup Menu](docs/resources//stroop_menu.jpg)
 
 There are three difficulty options available for this test, which control the proportion of &#39;congruent&#39; 
 questions the program generates. Congruent questions are questions where the color of the text matches the meaning of 
@@ -218,6 +218,6 @@ The subject should then say the color (blue) instead of the meaning on the color
 displays the word &quot;Correct&quot; if the spoken answer matches with the text&#39;s color and &quot;Wrong&quot; 
 if not.
 
-![Image: Stroop Color Test In Progress](images/stroop.jpg)
+![Image: Stroop Color Test In Progress](docs/resources//stroop.jpg)
 
 Once the user wants to exit the task, the red X button can be pressed to close the task and reopen the main menu.
