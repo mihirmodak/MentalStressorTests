@@ -11,9 +11,36 @@
   <!-- Settings for the whole document -->
   <base target="_blank" />
 
-  <!-- Add Page Icons -->
-  <link rel="icon" type="image/x-icon" href="resources/logo.png" />
-  <link rel="apple-touch-icon" href="resources/logo.png" />
+    <!-- Prefetch AWS S3 Bucket DNS -->
+    <link rel="dns-prefetch" href="https://mihirmodak.s3.us-east-1.amazonaws.com/" />
+
+    <!-- Preload images and logos -->
+    <!-- Page Favicon -->
+    <link rel="preload" href="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/logo.png" as="image" type="image/png"/>
+
+    <!-- Footer Home Button -->
+    <link rel="preload" href="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/home-lightmode.svg" as="image" type="image/svg+xml"/>
+    <link rel="preload" href="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/home-darkmode.svg" as="image" type="image/svg+xml"/>
+
+    <!-- Footer GitHub Button -->
+    <link rel="preload" href="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/github-mark-lightmode.svg" as="image" type="image/svg+xml"/>
+    <link rel="preload" href="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/github-mark-darkmode.svg" as="image" type="image/svg+xml"/>
+
+    <!-- Footer Linkedin Button -->
+    <link rel="preload" href="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/linkedin-lightmode.svg" as="image" type="image/svg+xml"/>
+    <link rel="preload" href="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/linkedin-darkmode.svg" as="image" type="image/svg+xml"/>
+
+    <!-- Footer Resume Button -->
+    <link rel="preload" href="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/resume-lightmode.svg" as="image" type="image/svg+xml"/>
+    <link rel="preload" href="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/resume-darkmode.svg" as="image" type="image/svg+xml"/>
+
+    <!-- Footer Email Button -->
+    <link rel="preload" href="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/email-lightmode.svg" as="image" type="image/svg+xml"/>
+    <link rel="preload" href="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/email-darkmode.svg" as="image" type="image/svg+xml"/>
+    
+    <!-- Add Page Icons -->
+    <link rel="icon" type="image/x-icon" href="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/logo.png">
+    <link rel="apple-touch-icon" href="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/logo.png">
 
   <!-- MathJax JavaScript -->
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -466,33 +493,55 @@
   </article>
 
   <!-- Footer Section -->
-  <footer>
-    <div style="margin: 20px 0px"></div>
-    <!-- A spacer, since <br> doesn't work apparently -->
-    <hr />
+  <footer class="footer">
+    <div style="margin: 20px 0px;"></div> <!-- A spacer, since <br> doesn't work apparently -->
+    <hr>
 
     <div class="footer links">
-      <a href="https://mihir-modak.com/" class="button round" target="_self">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Home-icon.svg/800px-Home-icon.svg.png"
-          class="logo" />
-      </a>
-      <a href="https://github.com/mihirmodak" class="button round">
-        <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" class="logo" />
-      </a>
-
-      <a href="https://www.linkedin.com/in/mihir-modak/" class="button round">
-        <img src="https://cdn-icons-png.flaticon.com/512/61/61109.png" class="logo" />
+      <a href="https://mihirmodak.github.io" class="button round" target="_self">
+        <picture>
+          <source srcset="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/home-darkmode.svg"
+            media="(prefers-color-scheme: dark)" class="logo">
+          <img src="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/home-lightmode.svg" class="logo">
+        </picture>
       </a>
 
-      <a href="https://mihirmodak.s3.us-east-1.amazonaws.com/Mihir+Modak+Resume.pdf" class="button round">
-        <img src="https://icons.veryicon.com/png/o/miscellaneous/general-icon-library/resume-7.png" class="logo" />
+      <a href="https://github.com/mihirmodak" class="button round" target="_blank">
+        <picture>
+          <source srcset="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/github-mark-darkmode.svg"
+            media="(prefers-color-scheme: dark)" class="logo">
+          <img src="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/github-mark-lightmode.svg"
+            class="logo" />
+        </picture>
       </a>
 
-      <a href="mailto:mihir.modak@outlook.com" class="button round">
-        <img src="https://cdn-icons-png.flaticon.com/512/2989/2989993.png" class="logo" />
+      <a href="https://www.linkedin.com/in/mihir-modak/" class="button round" target="_blank">
+        <picture>
+          <source srcset="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/linkedin-darkmode.svg"
+            media="(prefers-color-scheme: dark)" class="logo">
+          <img src="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/linkedin-lightmode.svg" class="logo">
+        </picture>
+      </a>
+
+      <a href="https://mihirmodak.s3.us-east-1.amazonaws.com/Mihir+Modak+Resume.pdf" class="button round"
+        target="_blank">
+        <picture>
+          <source srcset="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/resume-darkmode.svg"
+            media="(prefers-color-scheme: dark)" class="logo">
+          <img src="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/resume-lightmode.svg" class="logo">
+        </picture>
+      </a>
+
+      <a href="mailto:mihir.modak@outlook.com" class="button round" target="_blank">
+        <picture>
+          <source srcset="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/email-darkmode.svg"
+            media="(prefers-color-scheme: dark)" class="logo">
+          <img src="https://mihirmodak.s3.us-east-1.amazonaws.com/portfolio-images/email-lightmode.svg" class="logo">
+        </picture>
       </a>
     </div>
   </footer>
+
 
   <!-- Hidden span used to calculate text width -->
   <span id="text-width-calculator"></span>
